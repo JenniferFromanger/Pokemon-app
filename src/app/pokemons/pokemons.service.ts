@@ -24,6 +24,41 @@ export class PokemonsService {
     };
   }
 
+  //Rechercher un pokemon
+  searchPokemons(term: string) {
+    if (!term.trim()) {
+      return of([]);
+    }
+    return this.http.get<Pokemon[]>(`${this.pokemonsUrl}/?name=${term}`).pipe(
+      tap((_) => this.log(`found pokemons matching "${term}"`)),
+      catchError(this.handleError<Pokemon[]>(`searchPokemons`, []))
+    );
+  }
+
+  //Supprimer un Pokemon
+  deletePokemon(pokemon: Pokemon): Observable<Pokemon> {
+    const url = `${this.pokemonsUrl}/${pokemon.id}`;
+    const HttpOptions = {
+      headers: new HttpHeaders({ 'content-type': 'application/json' }),
+    };
+
+    return this.http.delete<Pokemon>(url, HttpOptions).pipe(
+      tap((_) => this.log(`delete pokemon id=${pokemon.id}`)),
+      catchError(this.handleError<Pokemon>(`deletedPokemon`))
+    );
+  }
+
+  //Editer mettre à jour un pokémon
+  updatePokemon(pokemon: Pokemon): Observable<Pokemon> {
+    const HttpOptions = {
+      headers: new HttpHeaders({ 'content-type': 'application/json' }),
+    };
+    return this.http.put(this.pokemonsUrl, pokemon, HttpOptions).pipe(
+      tap((_) => this.log(`updated pokemon id=${pokemon.id}`)),
+      catchError(this.handleError<any>(`updatedPokemon`))
+    );
+  }
+
   // Retourne tous les pokémons
   getPokemons(): Observable<Pokemon[]> {
     return this.http.get<Pokemon[]>(this.pokemonsUrl).pipe(
