@@ -12,7 +12,7 @@ const pokemonsRoutes: Routes = [
   {
     path: 'pokemon',
     canActivate: [AuthGuard],
-    children [
+    children: [
       { path: 'all', component: ListPokemonComponent },
       {
         path: 'edit/:id',
@@ -20,9 +20,8 @@ const pokemonsRoutes: Routes = [
         canActivate: [AuthGuard],
       },
       { path: ':id', component: DetailPokemonComponent },
-    ]
+    ],
   },
-  
 ];
 
 @NgModule({
