@@ -57,7 +57,7 @@ export class LoginComponent {
   name: string;
   password: string;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
   // Informe l'utilisateur sur son authentfication.
   setMessage() {
